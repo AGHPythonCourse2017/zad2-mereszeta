@@ -74,7 +74,24 @@ class Task:
     def_init = 'import random; data=[randint(0,__N__) for i in range(__N__)]'
     def_invoke = 'sorted(data)'
 
-    def __init__(this, ini, inv, clr):
-        this.ini = ini
-        this.inv = inv
-        this.clr = clr
+    def __init__(self, ini_name,inv_name,clr_name):
+        self.ini_name =ini_name
+        self.inv_name=inv_name
+        self.clr_name=clr_name
+
+    def open_ini(self):
+        f=open(self.ini_name)
+        to_ret=f.read()
+        f.close()
+        return to_ret
+    def open_inv(self):
+        f=open(self.inv_name)
+        to_ret=f.read()
+        f.close()
+        return to_ret
+    def open_clr(self):
+        f=open(self.clr_name)
+        to_ret=f.read()
+        f.close()
+        return to_ret
+
