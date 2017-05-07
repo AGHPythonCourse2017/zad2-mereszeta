@@ -2,47 +2,20 @@ import math
 
 
 class FunctionProvider:
-    @staticmethod
-    def o_1(n):
-        return 1
+    fun_to_string_mapper = [(lambda n: 1, "o1"), (lambda n: math.log2(n), "ologn"), (lambda n: n, "on"),
+                            (lambda n: n * math.log2(n), "onlogn"), (lambda n: n * n, "on2"),
+                            (lambda n: n * n * math.log2(n), "on2logn")]
+
+    fun_to_derivative_mapper = [(lambda n: math.log2(n), lambda n: 1 / n),
+                                (lambda n: n * math.log2(n), lambda n: math.log2(n) + 1),
+                                (lambda n: n * n * math.log2(n), lambda n: 2 * n * math.log2(n))]
 
     @staticmethod
-    def o_log_n(n):
-        return math.log2(n)
-
-    @staticmethod
-    def o_log_n_derivative(n):
-        return 1 / n
-
-    @staticmethod
-    def o_n(n):
-        return n
-
-    @staticmethod
-    def o_n_log_n(n):
-        return n * math.log2(n)
-
-    @staticmethod
-    def o_n_log_n_derivative(n):
-        return math.log2(n) + 1
-
-    @staticmethod
-    def o_n_2(n):
-        return n * n
-
-    @staticmethod
-    def o_n_2_log_n(n):
-        return n * n * math.log2(n)
-
-    @staticmethod
-    def o_n_2_log_n_derivative(n):
-        return 2 * n * math.log2(n) + n
-
-    fun_to_string_mapper = [(o_1, "o1"), (o_log_n, "ologn"), (o_n, "on"), (o_n_log_n, "onlogn"), (o_n_2, "on2"),
-                            (o_n_2_log_n, "on2logn")]
-
-    fun_to_derivative_mapper = [(o_log_n, o_log_n_derivative), (o_n_log_n, o_n_log_n_derivative),
-                                (o_n_2_log_n, o_n_2_log_n_derivative)]
+    def ret_list_of_funcs():
+        ret = []
+        for i in FunctionProvider.fun_to_string_mapper:
+            ret.append(i[0])
+        return ret
 
     @staticmethod
     def map_fun_to_derivative(fun):

@@ -13,28 +13,29 @@ class ComplexityCalculator:
         self.function = function
 
     def check_max(self):
-        minn = -1
-        helper_min = -2
-        min_phrase = "none"
-        helper_min_phrase = "none"
-        for tpl in self.measures_fit:
-            if tpl[1] > min:
-                minn = tpl[1]
-                min_phrase = tpl[0]
-            elif tpl[1] == min:
-                helper_min_phrase = tpl[0]
-                helper_min = tpl[0]
-        if minn == helper_min:
-            print("function between: " + min_phrase + "and" + helper_min_phrase)
-            self.set_function(helper_min_phrase)
+        maxx = -1
+        helper_maxx = -2
+        maxx_phrase = "none"
+        helper_maxx_phrase = "none"
+        for key, value in self.measures_fit.items():
+            if value > maxx:
+                maxx = value
+                maxx_phrase = key
+            elif value == min:
+                helper_maxx_phrase = key
+                helper_maxx = value
+        if maxx == helper_maxx:
+            print("function between: " + maxx_phrase + "and" + helper_maxx_phrase)
+            self.set_function(helper_maxx_phrase)
         else:
-            print("complexity of this function is: " + min_phrase)
-            self.set_function(min_phrase)
+            print("complexity of this function is: " + maxx_phrase)
+            self.set_function(maxx_phrase)
 
     def check_what_fits(self, tn1, tn2, b):
         lefty = abs(tn2[1] - b) / (tn1[1] - b)
         eps = float("inf")
         to_ret = "loool"
+
         for i in FunctionProvider.fun_to_string_mapper:
             x = abs(i[0](tn2[0]) / i[0](tn1[0]) - lefty)
             if x <= eps:
