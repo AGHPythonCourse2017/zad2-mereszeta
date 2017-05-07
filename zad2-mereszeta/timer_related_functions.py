@@ -1,17 +1,25 @@
-from timeit import timeit
+import logging
 import multiprocessing
 import time
 from random import randint
-from fun_helpers import Task
+from timeit import timeit
+
+from .fun_helpers import Task
 
 
 class TimingProvider:
     def __init__(self, ini_name, inv_name, clr_name):
         self.mytask = Task(ini_name, inv_name, clr_name)
+        self.ini_code = self.mytask.open_ini()
+        logging.info('code to initialize data structure is:\n +%s', self.ini_code)
+        self.inv_code = self.mytask.open_inv()
+        logging.info('code to run algorithm is:\n +%s', self.inv_code)
+        self.clr_code = self.mytask.open_clr()
+        logging.info('code to clear resources is:\n +%s', self.clr_code)
 
     def timer(self, res_q, n):
-        z = self.mytask.open_inv()
-        res_q.put(timeit(self.mytask.inv, setup="n = " + str(n) + ";data = " + z, number=10))
+
+        res_q.put(timeit(self.inv_code, setup="n = " + str(n) + ";data = " + self.ini_code, number=10))
         if self.mytask.clr_name != "":
             to_clr = self.mytask.open_clr()
             eval(to_clr)
@@ -33,15 +41,14 @@ class TimingProvider:
             ttime = res_q.get()
             return ttime
 
-    def eval_times(self, ttime):
+    def measure_times(self, ttime):
         table_of_times = []
         n = 10000
-        k = self.mytask.open_ini()
-        eval(k, n)
         tt = self.wrap_timer(ttime, n)
         cnt = 0
         while tt != -1 and cnt != 5:
             table_of_times.append((n, tt))
+            logging.debug("your value of n is: %d and your value of time is %f",n,tt)
             n *= 10
             cnt += 1
             tt = self.wrap_timer(ttime, n)
@@ -53,6 +60,7 @@ class TimingProvider:
                 tt = self.wrap_timer(ttime, n)
                 if tt != -1:
                     table_of_times.append((new_n, tt))
+                    logging.debug("your value of n is: %d and your value of time is %f", new_n, tt)
                     cnt += 1
         return table_of_times
 

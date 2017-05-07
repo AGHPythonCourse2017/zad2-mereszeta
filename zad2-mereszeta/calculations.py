@@ -1,5 +1,5 @@
-from fun_helpers import FunctionProvider
 import numpy
+from .fun_helpers import FunctionProvider
 
 
 class ComplexityCalculator:
@@ -86,3 +86,10 @@ class ComplexityCalculator:
                 n2 = n
                 n = n2 - f(n2)
             return n
+
+
+class ComplexityNotCalculatedException(Exception):
+    def __init__(self, message, errors):
+        super().__init__(message)
+
+        self.errors = errors
