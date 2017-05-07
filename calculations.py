@@ -1,4 +1,4 @@
-from task_helpers import FunctionProvider
+from fun_helpers import FunctionProvider
 import numpy
 
 
@@ -45,7 +45,7 @@ class ComplexityCalculator:
     def eval_times(self):
         for i in range(0, len(self.table_of_times) - 1):
             for j in range(i + 1, len(self.table_of_times)):
-                to_compare = self.check_what_fits(self, self.table_of_times[i], self.table_of_times[j], self.b)
+                to_compare = self.check_what_fits(self.table_of_times[i], self.table_of_times[j], self.b)
                 self.measures_fit[to_compare] += 1
 
         self.check_max()
@@ -57,6 +57,32 @@ class ComplexityCalculator:
         for time in self.table_of_times:
             x_ax.append(fun(time[0]))
             y_ax.append(time[1])
-
         p = numpy.polyfit(x_ax, y_ax, 1)
-        return numpy.polyval(p, given_n)
+        return numpy.polyval(p, fun(given_n))
+
+    def reversed_function(self):
+        if self.function == "o1":
+            x = [self.table_of_times[i][1] for i in range(len(self.table_of_times))]
+            y = [self.table_of_times[i][0] for i in range(len(self.table_of_times))]
+            return numpy.polyfit(x, y, 0)
+        elif self.function == "on":
+            x = [self.table_of_times[i][1] for i in range(len(self.table_of_times))]
+            y = [self.table_of_times[i][0] for i in range(len(self.table_of_times))]
+            return numpy.polyfit(x, y, 1)
+        if self.function == "on2":
+            x = [self.table_of_times[i][1] for i in range(len(self.table_of_times))]
+            y = [self.table_of_times[i][0] for i in range(len(self.table_of_times))]
+            return numpy.polyfit(x, y, 2)
+
+    def n_for_given_time(self, time):
+        if self.function == "o1" or self.function == "on" or self.function == "on2":
+            p = self.reversed_function()
+            return numpy.polyval(p, time)
+        else:
+            f = FunctionProvider.wrap_for_newton_formula(FunctionProvider.map_string_to_func(self.function), time)
+            n = 1
+            n2 = 0
+            while abs(n - n2) < 10e-3:
+                n2 = n
+                n = n2 - f(n2)
+            return n
