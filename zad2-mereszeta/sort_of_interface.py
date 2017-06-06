@@ -30,7 +30,3 @@ class TimerInterface:
         n = self.calculator.n_for_given_time(ttime)
         print("You can handle a data structure of length:" + str(n) + " for given time: " + str(ttime))
         return n
-
-
-
-
