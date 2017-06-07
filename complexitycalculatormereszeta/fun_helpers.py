@@ -33,7 +33,9 @@ class FunctionProvider:
 
     @staticmethod
     def wrap_for_newton_formula(fun, given_time):
-        return (fun - given_time) / FunctionProvider.map_fun_to_derivative(fun)
+        def wrap_it(n):
+            return fun(n)-given_time(n)/FunctionProvider.map_fun_to_derivative(fun)
+        return wrap_it
 
 
 class NoSuchFunctionException(Exception):
