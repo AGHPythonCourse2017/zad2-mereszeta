@@ -54,7 +54,7 @@ class TimingProvider:
             tt = self.wrap_timer(ttime, n)
         if cnt != 5:
             print(n)
-            n /= 10
+            n //= 10
             while cnt != 5:
                 new_n = randint(10, n)
                 tt = self.wrap_timer(ttime, n)
