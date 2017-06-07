@@ -80,7 +80,8 @@ class ComplexityCalculator:
             p = self.reversed_function()
             return numpy.polyval(p, time)
         else:
-            f = FunctionProvider.wrap_for_newton_formula(FunctionProvider.map_string_to_func(self.function), time)
+            f = FunctionProvider.wrap_for_newton_formula(FunctionProvider.map_string_to_func(self.function),
+                                                         lambda n: time)
             n = 1
             n2 = 0
             while abs(n - n2) < 10e-3:
